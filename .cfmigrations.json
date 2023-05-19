@@ -1,0 +1,21 @@
+{
+    "default": {
+        "manager": "cfmigrations.models.QBMigrationManager",
+        "migrationsDirectory": "resources/database/migrations/",
+        "seedsDirectory": "resources/database/seeds/",
+        "properties": {
+            "defaultGrammar": "SqlServerGrammar@qb",
+            "schema": "${DB_SCHEMA}",
+            "migrationsTable": "cfmigrations",
+            "connectionInfo": {
+                "password": "${DB_PASSWORD}",
+                "database": "testdb",
+                "connectionString": "jdbc:jtds:sqlserver://localhost:1434/testdb",
+                "class": "net.sourceforge.jtds.jdbc.Driver",
+                "username": "${DB_USER}",
+                "bundleName": "jtds",
+                "bundleVersion": "1.3.1"
+            }
+        }
+    }
+}

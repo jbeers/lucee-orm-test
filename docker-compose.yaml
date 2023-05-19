@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  coldfusion:
+    # depends_on:
+    #     - mssql
+    image: "ortussolutions/commandbox:lucee5-3.7.3"
+    ports:
+      - 8080:8080
+    networks:
+      - net
+    volumes:
+      - ./:/app
+    environment:
+      CFCONFIG_ADMINPASSWORD: coldbox
+      DB_PASSWORD: $DB_PASSWORD
+      DB_USER: $DB_USER
+      DB_HOST: mssql
+  mssql:
+    # image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    ports:
+      - "1434:1433"
+    environment:
+      MSSQL_SA_PASSWORD: ${DB_PASSWORD}
+      SA_PASSWORD: ${DB_PASSWORD}
+      ACCEPT_EULA: "Y"
+    user: root
+    volumes:
+      - /var/opt/mssql/data
+      - ./mssql:/usr/vws/mssql
+    networks:
+      - net
+    command: "usr/vws/mssql/entrypoint.sh"
+networks:
+  net:
