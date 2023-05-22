@@ -8,7 +8,7 @@ component {
 
         schema.create( "dbo.TableTwo", function( t ){
             t.uuid( "GUID" ).default( "NEWID()" ).primaryKey();
-            t.string( "Name", 50 );
+            t.string( "Namex", 50 );
         });
 
         schema.create( "dbo.Thing", function( t ){

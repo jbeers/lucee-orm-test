@@ -5,6 +5,37 @@
 		abort;
 	}
 
+	function demonstrate_preinsert_mismatch(){
+		var t1 = entitynew( 'TableOne' );
+		t1.setName( 'Test 1' );
+
+		entitySave( t1 );
+		ormflush();
+
+		var t2 = entitynew( 'TableTwo' );
+		// saving t2 should work even when the below line is commented out
+		// there is code in the TableTwo.preInsert() function that will default this value
+		// t2.setNamex( 'Test 2' );
+
+		entitySave( t2 );
+		ormflush();
+
+		var res = queryExecute(
+			"
+				SELECT * FROM dbo.TableOne
+				UNION
+				SELECT GUID, Namex as [Name] FROM dbo.TableTwo
+				UNION
+				SELECT * FROM dbo.Thing
+			",
+			{},
+			{ dataSource: 'testdb' }
+		);
+
+		writeDump( res );
+		abort;
+	}
+
 	function demonstrate_missing_data_in_preinsert( event, rc, prc ){
 		var thingRes = queryExecute( "SELECT TOP 1 GUID FROM dbo.Thing", [], {dataSource: 'testdb' } );
 		var thing = thingRes.recordCount ? entityLoadByPK('Thing', thingRes.GUID[1] ) : entityNew( 'Thing' ); 
@@ -20,8 +51,8 @@
 		entitySave( t1 );
 		ormflush();
 
-		var t2 = entitynew( 'TableOne' );
-		t2.setName( 'Test 2' );
+		var t2 = entitynew( 'TableTwo' );
+		// t2.setNamex( 'Test 2' );
 
 		entitySave( t2 );
 		ormflush();
@@ -36,7 +67,7 @@
 			"
 				SELECT * FROM dbo.TableOne
 				UNION
-				SELECT * FROM dbo.TableTwo
+				SELECT GUID, Namex as [Name] FROM dbo.TableTwo
 				UNION
 				SELECT * FROM dbo.Thing
 			",
