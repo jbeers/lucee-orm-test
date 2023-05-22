@@ -6,12 +6,6 @@
 	}
 
 	function demonstrate_preinsert_mismatch(){
-		var t1 = entitynew( 'TableOne' );
-		t1.setName( 'Test 1' );
-
-		entitySave( t1 );
-		ormflush();
-
 		var t2 = entitynew( 'TableTwo' );
 		// saving t2 should work even when the below line is commented out
 		// there is code in the TableTwo.preInsert() function that will default this value
